@@ -1,13 +1,25 @@
 require 'sinatra'
 require 'sinatra/reloader'
+require 'pry'
 
 set :secret_number, rand(100)
 
 get '/' do
   guess = params["guess"]
-  message = check_guess(guess)
-  erb :index, :locals => {:secret_number => @secret_number,
-                          :message       => message}
+  cheat = params["cheat"]
+  if cheat == "true"
+    cheat_mode
+  else
+    message = check_guess(guess)
+    erb :index, :locals => {:secret_number => settings.secret_number,
+                            :message       => message}
+  end
+end
+
+def cheat_mode
+  message = "The Secret Number is: #{settings.secret_number}"
+  erb :cheat_mode, :locals => {:secret_number => settings.secret_number,
+                               :message       => message}
 end
 
 def check_guess(guess)
