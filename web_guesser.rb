@@ -22,6 +22,12 @@ def cheat_mode
                                :message       => message}
 end
 
+def game_screen
+  message = check_guess(guess)
+  erb :index, :locals => {:secret_number => settings.secret_number,
+                          :message       => message}
+end
+
 def check_guess(guess)
   if guess == "" || guess.nil?
     message = ""
